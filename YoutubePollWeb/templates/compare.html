@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Compare Thumbnails</title>
+</head>
+<body>
+	<h1>Compare Thumbnails</h1>
+	{% if thumbnail1 %}
+		<img src="{{ thumbnail1 }}" alt="Thumbnail 1">
+	{% endif %}
+	{% if thumbnail2 %}
+		<img src="{{ thumbnail2 }}" alt="Thumbnail 2">
+	{% endif %}
+	{% if thumbnail1 and thumbnail2 %}
+		{% if similarity %}
+			<p>The similarity score is: {{ similarity }}</p>
+		{% else %}
+			<p>No similarity score found</p>
+		{% endif %}
+	{% endif %}
+</body>
+</html>
