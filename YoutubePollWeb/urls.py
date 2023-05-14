@@ -17,7 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from .views import compare_thumbnails
+from .views import compare
+from . import views
 
 urlpatterns = [
-    path('', compare_thumbnails, name='compare'),
+     path('compare/', views.compare, name='compare'),
 ]
+
+
+
