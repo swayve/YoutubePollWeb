@@ -16,13 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import compare_thumbnails
-from .views import compare
+from .views import compare_videos, home_view
 from . import views
 
+
+
+
 urlpatterns = [
-     path('compare/', views.compare, name='compare'),
+    path('', home_view, name='home'),
+    path('compare_videos/', compare_videos, name='compare_videos'),
+    path('about/', views.about, name='about'),
 ]
-
-
-

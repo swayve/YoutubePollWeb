@@ -1,22 +1,39 @@
-from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Thumbnail
+from django.shortcuts import render
+from .video_comparison import VideoComparison
+
+def compare_videos(request):
+    # Get the video URLs from the request
+    video_url1 = request.GET.get('video_url1')
+    video_url2 = request.GET.get('video_url2')
+
+    # If both URLs are present, perform the comparison
+    if video_url1 and video_url2:
+        # Initialize the VideoComparison object
+        comparison = VideoComparison(video_url1, video_url2)
+
+        # Get the comparison results
+        result = comparison.compare()
+
+        # Pass the results to the template
+        context = {'result': result}
+        return render(request, 'compare_videos.html', context)
+
+    # If the URLs are not present, just render the page
+    else:
+        return render(request, 'compare_videos.html')
 
 
-def compare(request):
-    if request.method == 'GET':
-        # Retrieve two random thumbnails from the database
-        thumbnails = Thumbnail.objects.order_by('?')[:2]
+def home_view(request):
+    context = {
+        'title': 'Welcome to Youtube Poll',
+        'description': 'Compare two Youtube videos and find out which one is better'
+    }
+    return render(request, 'home.html', context)
 
-        # Render the compare.html template with the thumbnails as context
-        context = {'thumbnails': thumbnails}
-        return render(request, 'compare.html', context)
 
-def compare_thumbnails(request):
-    # Retrieve two random thumbnails from the database
-    thumbnails = Thumbnail.objects.order_by('?')[:2]
 
-    # Render the compare.html template with the thumbnails as context
-    context = {'thumbnails': thumbnails}
-    return render(request, 'compare.html', context)
+def about(request):
+    return render(request, 'about.html')
+
 
