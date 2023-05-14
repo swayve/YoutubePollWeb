@@ -24,16 +24,11 @@ def compare_videos(request):
         return render(request, 'compare_videos.html')
 
 
-def home_view(request):
-    context = {
-        'title': 'Welcome to Youtube Poll',
-        'description': 'Compare two Youtube videos and find out which one is better'
-    }
-    return render(request, 'home.html', context)
-
 
 
 def about(request):
     return render(request, 'about.html')
 
 
+def index(request):
+    return render(request, 'index.html')
