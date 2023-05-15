@@ -5,49 +5,68 @@
     <title>My Website</title>
     <style>
         body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        
+        #title {
+            margin-top: 50px;
+        }
+        
+        #thumbnails {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 50px;
+        }
+        
+        .thumbnail {
+            margin: 0 20px;
+            cursor: pointer;
+        }
+        
+        .thumbnail img {
+            width: 200px;
+            height: auto;
+        }
+        
+        #comparison {
+            margin-top: 50px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        footer {
             background-color: #f2f2f2;
-            margin: 0;
-            padding: 0;
+            padding: 20px 0;
+            margin-top: 50px;
         }
         
         #about {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            text-align: center;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
         }
         
         #about h2 {
             font-size: 24px;
             margin-bottom: 10px;
-            color: #333;
         }
         
         #about p {
-            font-size: 16px;
             line-height: 1.5;
-            color: #666;
         }
         
-        .thumbnail {
-            margin: 50px 20px;
+        #about-link {
+            margin-top: 20px;
+            text-decoration: underline;
             cursor: pointer;
-        }
-        
-        .thumbnail img {
-            width: 75%;
-            height: auto;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1 id="title">Youtube Thumbnail compare</h1>
+        <h1 id="title">My Website</h1>
     </header>
     <main>
         <div id="thumbnails">
@@ -70,13 +89,14 @@
         </div>
     </div>
     <footer>
-        <p>&copy; 2023 Youtube Thumbnail compare All rights reserved.</p>
+        <p>&copy; 2023 My Website. All rights reserved.</p>
         <div id="about">
             <h2>About Us</h2>
-            <p>Small side project to figure out your own tatse of youtube genre.</p>
+            <p>We are a team of experts dedicated to providing [insert description of your team]. Our mission is to [insert mission statement].</p>
             <p id="about-link"><a href="/about/">Click here to learn more</a></p>
         </div>
     </footer>
+    
     <script>
         var selectedThumbnail = null;
         
@@ -97,25 +117,5 @@
             
             // Hide the other thumbnails
             var thumbnails = document.getElementById('thumbnails');
-            thumbnails.style.display = 'none';
-            
-            // Fetch and show the next thumbnail
-            fetchNewThumbnail();
-        }
-        
-        function fetchNewThumbnail() {
-            // Make an AJAX request to your Django view to retrieve a new thumbnail URL
-            fetch('/fetch_new_thumbnail')
-                .then(response => response.json())
-                .then(data => {
-                    // Update the next thumbnail image source
-                    var nextThumbnailImage = document.getElementById('next-thumbnail-image');
-                    nextThumbnailImage.src = data.thumbnail_url;
-                    
-                    // Show the comparison section
-                    var comparisonSection = document.getElementById('comparison');
-                    comparisonSection.classList.remove('hidden');
-                });
         }
     </script>
-    
