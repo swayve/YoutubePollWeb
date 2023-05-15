@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Website</title>
+    <title>Youtube Thumbnail Compare</title>
     <style>
         body {
             text-align: center;
             font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom right, #567CFF, #8EA8FF, #7AF8FF, #D875FF, #8D4BE0);
         }
         
         #title {
@@ -17,12 +18,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-top: 50px;
+            margin-top: 300px;
         }
         
         .thumbnail {
-            margin: 0 20px;
+            margin: 0 60px; /* Increased the margin between thumbnails */
             cursor: pointer;
+            transform: scale(1.5);
         }
         
         .thumbnail img {
@@ -42,10 +44,24 @@
             background-color: #f2f2f2;
             padding: 20px 0;
             margin-top: 50px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 14px;
+            color: #888;
         }
         
         #about {
-            margin-top: 30px;
+            position: fixed;
+            bottom: 60px;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px 10px 0 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         
         #about h2 {
@@ -66,7 +82,7 @@
 </head>
 <body>
     <header>
-        <h1 id="title">My Website</h1>
+        <h1 id="title">Youtube Thumbnail Compare</h1>
     </header>
     <main>
         <div id="thumbnails">
@@ -89,10 +105,10 @@
         </div>
     </div>
     <footer>
-        <p>&copy; 2023 My Website. All rights reserved.</p>
+        <p>&copy; 2023 Youtube Thumbnail Compare . All rights reserved.</p>
         <div id="about">
             <h2>About Us</h2>
-            <p>We are a team of experts dedicated to providing [insert description of your team]. Our mission is to [insert mission statement].</p>
+            <p>Side project of mine..</p>
             <p id="about-link"><a href="/about/">Click here to learn more</a></p>
         </div>
     </footer>
