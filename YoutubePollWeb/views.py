@@ -1,6 +1,11 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from .video_comparison import VideoComparison
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
+import random
 
 def compare_videos(request):
     # Get the video URLs from the request
@@ -31,4 +36,30 @@ def about(request):
 
 
 def index(request):
-    return render(request, 'index.html')
+    thumbnail_url = fetch_random_video()
+
+    context = {
+        'thumbnail_url': thumbnail_url
+    }
+
+    return render(request, 'index.html', context)
+
+
+def fetch_random_video():
+    api_key = 'YOUR_API_KEY'  # Replace with your own YouTube API key
+
+    try:
+        youtube = build('youtube', 'v3', developerKey=api_key)
+        request = youtube.search().list(
+            part='snippet',
+            q='your_search_query',  # Replace with your own search query
+            maxResults=10
+        )
+        response = request.execute()
+        items = response['items']
+        random_video = random.choice(items)
+        thumbnail_url = random_video['snippet']['thumbnails']['medium']['url']
+        return thumbnail_url
+    except HttpError as e:
+        print(f'An HTTP error occurred: {e}')
+        return None
