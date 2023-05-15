@@ -5,37 +5,49 @@
     <title>My Website</title>
     <style>
         body {
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+        
+        #about {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
             text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         
-        #title {
-            margin-top: 50px;
+        #about h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #333;
         }
         
-        #thumbnails {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 50px;
+        #about p {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #666;
         }
         
         .thumbnail {
-            margin: 0 20px;
+            margin: 50px 20px;
             cursor: pointer;
         }
         
-        #comparison {
-            margin-top: 50px;
-        }
-        
-        .hidden {
-            display: none;
+        .thumbnail img {
+            width: 75%;
+            height: auto;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1 id="title">My Website</h1>
+        <h1 id="title">Youtube Thumbnail compare</h1>
     </header>
     <main>
         <div id="thumbnails">
@@ -58,13 +70,13 @@
         </div>
     </div>
     <footer>
-        <p>&copy; 2023 My Website. All rights reserved.</p>
+        <p>&copy; 2023 Youtube Thumbnail compare All rights reserved.</p>
         <div id="about">
             <h2>About Us</h2>
-            <p>We are a team of experts dedicated to providing [insert description of your team]. Our mission is to [insert mission statement].</p>
+            <p>Small side project to figure out your own tatse of youtube genre.</p>
+            <p id="about-link"><a href="/about/">Click here to learn more</a></p>
         </div>
     </footer>
-    
     <script>
         var selectedThumbnail = null;
         
