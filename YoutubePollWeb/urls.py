@@ -16,14 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import compare_videos
-from . import views
-
-
-
+from .views import compare_videos, index, about, fetch_new_thumbnails
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', index, name='index'),
     path('compare_videos/', compare_videos, name='compare_videos'),
-    path('about/', views.about, name='about'),
+    path('about/', about, name='about'),
+    path('fetch_new_thumbnails/', fetch_new_thumbnails, name='fetch_new_thumbnails'),
 ]
