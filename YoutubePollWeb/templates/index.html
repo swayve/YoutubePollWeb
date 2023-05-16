@@ -7,7 +7,8 @@
         body {
             text-align: center;
             font-family: Arial, sans-serif;
-            background: linear-gradient(to bottom right, #567CFF, #8EA8FF, #7AF8FF, #D875FF, #8D4BE0);
+            background: linear-gradient(to bottom, #472081, #204EE8, #7885FF, #EB00A1, #FF0051);
+            background-size: 100% 200%;
         }
         
         #title {
@@ -22,7 +23,7 @@
         }
         
         .thumbnail {
-            margin: 0 60px; /* Increased the margin between thumbnails */
+            margin: 0 60px;
             cursor: pointer;
             transform: scale(1.5);
         }
@@ -78,6 +79,11 @@
             text-decoration: underline;
             cursor: pointer;
         }
+
+        .thumbnail.selected {
+            border: 2px solid yellow;
+        }
+
     </style>
 </head>
 <body>
@@ -86,11 +92,11 @@
     </header>
     <main>
         <div id="thumbnails">
-            <div class="thumbnail" onclick="thumbnailClicked(1)">
+            <div class="thumbnail" onclick="thumbnailClicked(1)" id="thumbnail-1">
                 <img src="{{ thumbnail_url1 }}" alt="Thumbnail 1">
                 <p>Thumbnail 1</p>
             </div>
-            <div class="thumbnail" onclick="thumbnailClicked(2)">
+            <div class="thumbnail" onclick="thumbnailClicked(2)" id="thumbnail-2">
                 <img src="{{ thumbnail_url2 }}" alt="Thumbnail 2">
                 <p>Thumbnail 2</p>
             </div>
@@ -109,29 +115,60 @@
         <div id="about">
             <h2>About Us</h2>
             <p>Side project of mine..</p>
-            <p id="about-link"><a href="/about/">Click here to learn more</a></p>
+            <a href="{% url 'about' %}">Learn More</a>
         </div>
     </footer>
-    
+
     <script>
+        // JavaScript code
+
+        // Get the initial thumbnail URLs from Django template variables
+        var thumbnailUrl1 = "{{ thumbnail_url1 }}";
+        var thumbnailUrl2 = "{{ thumbnail_url2 }}";
+
+        // Initialize the selected thumbnail
         var selectedThumbnail = null;
-        
+
+        // Function to handle thumbnail click event
         function thumbnailClicked(thumbnailNumber) {
-            // Get the chosen thumbnail element
-            var chosenThumbnail = document.getElementById('chosen-thumbnail');
-            var chosenThumbnailImage = document.getElementById('chosen-thumbnail-image');
-            
-            // Set the chosen thumbnail image source
-            if (thumbnailNumber === 1) {
-                chosenThumbnailImage.src = "{{ thumbnail_url1 }}";
-            } else if (thumbnailNumber === 2) {
-                chosenThumbnailImage.src = "{{ thumbnail_url2 }}";
+            // Get the clicked thumbnail element
+            var clickedThumbnail = document.getElementById('thumbnail-' + thumbnailNumber);
+
+            // Check if the clicked thumbnail is not the currently selected thumbnail
+            if (clickedThumbnail !== selectedThumbnail) {
+                // Show the comparison section
+                var comparisonSection = document.getElementById('comparison');
+                comparisonSection.classList.remove('hidden');
+
+                // Set the chosen thumbnail image
+                var chosenThumbnailImage = document.getElementById('chosen-thumbnail-image');
+                chosenThumbnailImage.src = clickedThumbnail.getElementsByTagName('img')[0].src;
+
+                // Fetch a new thumbnail for the unselected thumbnail
+                fetchNewThumbnail(clickedThumbnail);
             }
-            
-            // Show the chosen thumbnail
-            chosenThumbnail.style.display = 'block';
-            
-            // Hide the other thumbnails
-            var thumbnails = document.getElementById('thumbnails');
+        }
+
+        // Function to fetch a new thumbnail from the API
+        function fetchNewThumbnail(clickedThumbnail) {
+            // Send an AJAX request to fetch a new thumbnail
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/fetch_new_thumbnails/', true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    // Parse the response JSON data
+                    var response = JSON.parse(xhr.responseText);
+
+                    // Get the URL of the new thumbnail
+                    var newThumbnailUrl = clickedThumbnail === document.getElementById('thumbnail-1') ? response.thumbnail_url2 : response.thumbnail_url1;
+
+                    // Set the new thumbnail URL for the unselected thumbnail
+                    var unselectedThumbnail = clickedThumbnail === document.getElementById('thumbnail-1') ? document.getElementById('thumbnail-2') : document.getElementById('thumbnail-1');
+                    unselectedThumbnail.getElementsByTagName('img')[0].src = newThumbnailUrl;
+                }
+            };
+            xhr.send();
         }
     </script>
+</body>
+</html>
