@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Youtube Thumbnail Compare</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #472081, #204EE8, #7885FF, #EB00A1, #FF0051);
+            background-size: 100% 200%;
+        }
+        
+        #title {
+            margin-top: 50px;
+        }
+        
+        #thumbnails {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 300px;
+        }
+        
+        .thumbnail {
+            margin: 0 60px;
+            cursor: pointer;
+            transform: scale(1.5);
+        }
+        
+        .thumbnail img {
+            width: 200px;
+            height: auto;
+        }
+        
+        #comparison {
+            margin-top: 50px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        footer {
+            background-color: #f2f2f2;
+            padding: 20px 0;
+            margin-top: 50px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 14px;
+            color: #888;
+        }
+        
+        #about {
+            position: fixed;
+            bottom: 60px;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px 10px 0 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        #about h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        #about p {
+            line-height: 1.5;
+        }
+        
+        #about-link {
+            margin-top: 20px;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .thumbnail.selected {
+            border: 2px solid yellow;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1 id="title">Youtube Thumbnail Compare</h1>
+    </header>
+    <main>
+        <div id="thumbnails">
+            <div class="thumbnail" onclick="thumbnailClicked(1)" id="thumbnail-1">
+                <img src="{{ thumbnail_url1 }}" alt="Thumbnail 1">
+                <p>Thumbnail 1</p>
+            </div>
+            <div class="thumbnail" onclick="thumbnailClicked(2)" id="thumbnail-2">
+                <img src="{{ thumbnail_url2 }}" alt="Thumbnail 2">
+                <p>Thumbnail 2</p>
+            </div>
+        </div>
+    </main>
+    <div id="comparison" class="hidden">
+        <div class="thumbnail-wrapper" id="chosen-thumbnail">
+            <img id="chosen-thumbnail-image" src="" alt="Chosen Thumbnail">
+        </div>
+        <div id="next-thumbnail-wrapper">
+            <img id="next-thumbnail-image" src="" alt="Next Thumbnail">
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2023 Youtube Thumbnail Compare . All rights reserved.</p>
+        <div id="about">
+            <h2>About Us</h2>
+            <p>Side project of mine..</p>
+            <a href="{% url 'about' %}">Learn More</a>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript code
+
+        // Get the initial thumbnail URLs from Django template variables
+        var thumbnailUrl1 = "{{ thumbnail_url1 }}";
+        var thumbnailUrl2 = "{{ thumbnail_url2 }}";
+
+        // Initialize the selected thumbnail
+        var selectedThumbnail = null;
+
+        // Function to handle thumbnail click event
+        function thumbnailClicked(thumbnailNumber) {
+            // Get the clicked thumbnail element
+            var clickedThumbnail = document.getElementById('thumbnail-' + thumbnailNumber);
+
+            // Check if the clicked thumbnail is not the currently selected thumbnail
+            if (clickedThumbnail !== selectedThumbnail) {
+                // Show the comparison section
+                var comparisonSection = document.getElementById('comparison');
+                comparisonSection.classList.remove('hidden');
+
+                // Set the chosen thumbnail image
+                var chosenThumbnailImage = document.getElementById('chosen-thumbnail-image');
+                chosenThumbnailImage.src = clickedThumbnail.getElementsByTagName('img')[0].src;
+
+                // Fetch a new thumbnail for the unselected thumbnail
+                fetchNewThumbnail(clickedThumbnail);
+            }
+        }
+
+        // Function to fetch a new thumbnail from the API
+        function fetchNewThumbnail(clickedThumbnail) {
+            // Send an AJAX request to fetch a new thumbnail
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/fetch_new_thumbnails/', true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    // Parse the response JSON data
+                    var response = JSON.parse(xhr.responseText);
+
+                    // Get the URL of the new thumbnail
+                    var newThumbnailUrl = clickedThumbnail === document.getElementById('thumbnail-1') ? response.thumbnail_url2 : response.thumbnail_url1;
+
+                    // Set the new thumbnail URL for the unselected thumbnail
+                    var unselectedThumbnail = clickedThumbnail === document.getElementById('thumbnail-1') ? document.getElementById('thumbnail-2') : document.getElementById('thumbnail-1');
+                    unselectedThumbnail.getElementsByTagName('img')[0].src = newThumbnailUrl;
+                }
+            };
+            xhr.send();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Compare Thumbnails</title>
+    <style>
+        /* Your CSS styles here */
+        .thumbnails {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 100px;
+        }
+
+        .thumbnail {
+            margin: 0 30px;
+            cursor: pointer;
+        }
+
+        .thumbnail img {
+            width: 300px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Compare Thumbnails</h1>
+    <div class="thumbnails">
+        <div class="thumbnail" onclick="thumbnailClicked(1)">
+            <img src="{{ thumbnail1 }}" alt="Thumbnail 1">
+        </div>
+        <div class="thumbnail" onclick="thumbnailClicked(2)">
+            <img src="{{ thumbnail2 }}" alt="Thumbnail 2">
+        </div>
+    </div>
+    {% if thumbnail1 and thumbnail2 %}
+        {% if similarity %}
+            <p>The similarity score is: {{ similarity }}</p>
+        {% else %}
+            <p>No similarity score found</p>
+        {% endif %}
+    {% endif %}
+
+    <script>
+        var selectedThumbnail = null;
+
+        function thumbnailClicked(thumbnailNumber) {
+            var thumbnails = document.getElementsByClassName('thumbnail');
+            for (var i = 0; i < thumbnails.length; i++) {
+                thumbnails[i].classList.remove('selected');
+            }
+
+            var selectedThumbnail = document.getElementsByClassName('thumbnail')[thumbnailNumber - 1];
+            selectedThumbnail.classList.add('selected');
+        }
+    </script>
+</body>
+</html>
